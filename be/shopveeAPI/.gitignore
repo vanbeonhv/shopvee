@@ -267,4 +267,4 @@ BeLibrary/obj
 *.cache
 **/Debug/
 /BeLibrary/obj/Debug
-
+.env
