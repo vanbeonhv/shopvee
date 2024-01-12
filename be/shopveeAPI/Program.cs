@@ -1,11 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using shopveeAPI.DbContext;
+using shopveeAPI.Services.User;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 // Add services to the container.
+builder.Services.AddDbContext<ShopveeDbContext>(opts =>
+    opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IUserServices, UserServices>();
 
 var app = builder.Build();
 
