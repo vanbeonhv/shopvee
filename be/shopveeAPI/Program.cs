@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 Env.Load();
 
-// Add services to the container.
+// Add services to the container
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
     opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING").Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
 
