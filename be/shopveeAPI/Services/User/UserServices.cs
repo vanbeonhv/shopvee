@@ -49,4 +49,26 @@ public class UserServices : IUserServices
             throw;
         }
     }
+
+    public async Task<int> DeleteUserAsync(Guid id)
+    {
+        try
+        {
+            var deleteProduct = await _dbContext.User.FindAsync(id);
+            if (deleteProduct == null)
+            {
+                return -1;
+            }
+
+            _dbContext.User.Remove(deleteProduct);
+            var result = _dbContext.SaveChangesAsync();
+            return 1;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            throw;
+        }
+    }
 }
