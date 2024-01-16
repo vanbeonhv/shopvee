@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using shopveeAPI.Entities;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
+using shopveeAPI.UnitOfWork;
 
 namespace shopveeAPI.Controllers;
 
@@ -11,19 +12,19 @@ namespace shopveeAPI.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserServices _services;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UserRequest> _validator;
 
-    public UserController(IUserServices userServices, IValidator<UserRequest> validator)
+    public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator)
     {
-        _services = userServices;
+        _unitOfWork = unitOfWork;
         _validator = validator;
     }
 
     [HttpGet("get-all")]
     public async Task<ActionResult> GetUser()
     {
-        var users = await _services.GetUser();
+        var users = await _unitOfWork.userServices.GetUser();
         return Ok(users);
     }
 
@@ -35,14 +36,16 @@ public class UserController : ControllerBase
         {
             return BadRequest(validationResult.Errors.Select(error => error.ErrorMessage));
         }
-        var user = await _services.AddUserAsync(request);
-        return Ok(user);
+
+        var user = await _unitOfWork.userServices.AddUserAsync(request);
+        
+        return user == null ? Ok(user) : BadRequest("error");
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(Guid id)
     {
-        var result = await _services.DeleteUserAsync(id);
+        var result = await _unitOfWork.userServices.DeleteUserAsync(id);
         return Ok(result);
     }
 }
