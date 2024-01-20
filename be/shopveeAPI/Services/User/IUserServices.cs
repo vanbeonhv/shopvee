@@ -1,7 +1,7 @@
 using shopveeAPI.Services.User.Dto.Request;
 
 namespace shopveeAPI.Services.User;
-using Entities;
+using Models;
 public interface IUserServices
 {
     Task<List<User>> GetUser();

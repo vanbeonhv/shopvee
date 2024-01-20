@@ -1,13 +1,11 @@
-using System.ComponentModel.DataAnnotations;
 using shopveeAPI.Services.User.Dto.Request;
-using CommonLibs;
-using Microsoft.AspNetCore.Mvc;
 
 namespace shopveeAPI.Services.User;
 
+using Models;
 using DbContext;
-using Entities;
 using CommonLibs;
+using Microsoft.EntityFrameworkCore;
 
 public class UserServices : IUserServices
 {
@@ -23,7 +21,7 @@ public class UserServices : IUserServices
         var entities = new List<User>();
         try
         {
-            entities = _dbContext.User.ToList();
+            entities = await _dbContext.User.ToListAsync();
             return entities;
         }
         catch (Exception e)

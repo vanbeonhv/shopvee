@@ -6,6 +6,7 @@ using shopveeAPI.DbContext;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.Services.User.Validator;
+using shopveeAPI.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -15,6 +16,7 @@ Env.Load();
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
     opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING").Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
 
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();

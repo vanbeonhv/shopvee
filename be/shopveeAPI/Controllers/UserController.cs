@@ -1,7 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using shopveeAPI.Entities;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.UnitOfWork;

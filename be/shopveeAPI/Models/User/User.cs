@@ -1,5 +1,4 @@
-namespace shopveeAPI.Entities;
-
+﻿namespace Models;
 public class User
 {
     public Guid Id {get; set;}
