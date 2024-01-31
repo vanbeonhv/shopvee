@@ -6,14 +6,14 @@ namespace shopveeAPI.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ShopveeDbContext _dbContext;
+    public IUserGenericService _userGenericService { get; set; }
 
-    public UnitOfWork(ShopveeDbContext dbContext, IUserServices userService)
+    public UnitOfWork(ShopveeDbContext dbContext, IUserGenericService userGenericService)
     {
         _dbContext = dbContext;
-        this.userServices = userService;
+        this._userGenericService = userGenericService;
     }
 
-    public IUserServices userServices { get; set; }
 
     public int SaveChange()
     {
