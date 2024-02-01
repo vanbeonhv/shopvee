@@ -1,0 +1,29 @@
+{
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "build /home/marc/workspace/personal/shopvee/be/shopveeAPI/shopveeAPI.csproj",
+			"file": "/home/marc/workspace/personal/shopvee/be/shopveeAPI/shopveeAPI.csproj",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "build"
+		},
+		{
+			"type": "dotnet",
+			"task": "watch shopveeAPI",
+			"file": "/home/marc/workspace/personal/shopvee/be/shopveeAPI/shopveeAPI.csproj",
+			"problemMatcher": [],
+			"label": "dotnet: watch shopveeAPI"
+		},
+		{
+			"type": "dotnet",
+			"task": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "dotnet: build"
+		}
+	]
+}

@@ -1,9 +1,10 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using shopveeAPI.Entities;
+using Models;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
+using shopveeAPI.UnitOfWork;
 
 namespace shopveeAPI.Controllers;
 
@@ -11,31 +12,46 @@ namespace shopveeAPI.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserServices _services;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UserRequest> _validator;
 
-    public UserController(IUserServices userServices, IValidator<UserRequest> validator)
+    public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator)
     {
-        _services = userServices;
+        _unitOfWork = unitOfWork;
         _validator = validator;
     }
 
     [HttpGet("get-all")]
     public async Task<ActionResult> GetUser()
     {
-        var users = await _services.GetUser();
+        var users = await _unitOfWork._userGenericService.GetAll();
         return Ok(users);
     }
 
     [HttpPost()]
     public async Task<ActionResult> AddUser([FromBody] UserRequest request)
     {
-        ValidationResult validationResult = _validator.Validate(request);
+        ValidationResult validationResult = await _validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors.Select(error => error.ErrorMessage));
         }
-        var user = await _services.AddUserAsync(request);
-        return Ok(user);
+
+        //Add mapping method later
+        var entiry = new User()
+        {
+            Email = request.Email,
+            Password = request.Password
+        };
+        var res = await _unitOfWork._userGenericService.Add(entiry);
+
+        return res == 0 ? BadRequest("error") : Ok(res);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteUser(Guid id)
+    {
+        var result = await _unitOfWork._userGenericService.Delete(id);
+        return Ok(result);
     }
 }

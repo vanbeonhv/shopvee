@@ -1,4 +1,4 @@
-using shopveeAPI.Entities;
+using Models;
 
 namespace shopveeAPI.DbContext;
 

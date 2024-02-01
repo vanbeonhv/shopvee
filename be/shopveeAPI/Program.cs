@@ -3,9 +3,11 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using shopveeAPI.DbContext;
+using shopveeAPI.Repository;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.Services.User.Validator;
+using shopveeAPI.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -15,6 +17,7 @@ Env.Load();
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
     opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING").Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
 
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
@@ -22,7 +25,9 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IUserServices, UserServices>();
+builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
 builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();
+
 
 
 var app = builder.Build();

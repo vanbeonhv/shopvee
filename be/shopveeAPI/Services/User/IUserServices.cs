@@ -1,9 +1,10 @@
 using shopveeAPI.Services.User.Dto.Request;
 
 namespace shopveeAPI.Services.User;
-using Entities;
+using Models;
 public interface IUserServices
 {
     Task<List<User>> GetUser();
-    Task<User> AddUserAsync(UserRequest request);
+    Task<User?> AddUserAsync(UserRequest request);
+    Task<int> DeleteUserAsync(Guid id);
 }
