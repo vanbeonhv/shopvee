@@ -6,6 +6,6 @@ namespace shopveeAPI.Repository
     Task<List<T>> GetAll();
     Task<int> Add(T entity);
     Task Update(T entity);
-    Task<int> Delete(T entity);
+    Task<int> Delete(Guid id);
   }
 }

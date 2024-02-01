@@ -49,9 +49,9 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteUser([FromBody] User user)
+    public async Task<ActionResult> DeleteUser(Guid id)
     {
-        var result = await _unitOfWork._userGenericService.Delete(user);
+        var result = await _unitOfWork._userGenericService.Delete(id);
         return Ok(result);
     }
 }

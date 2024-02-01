@@ -36,9 +36,14 @@ namespace shopveeAPI.Repository
             await _shopveeDbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Delete(T entity)
+        public async Task<int> Delete(Guid id)
         {
-            _shopveeDbContext.Remove(entity);
+            var entity = await _shopveeDbContext.Set<T>().FindAsync(id);
+            if (entity == null)
+            {
+                return 0;
+            }
+            _shopveeDbContext.Set<T>().Remove(entity);
             await _shopveeDbContext.SaveChangesAsync();
             return 1;
         }
