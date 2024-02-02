@@ -22,7 +22,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("get-all")]
-    public async Task<ActionResult> GetUser()
+    public async Task<ActionResult> GetAllUser()
     {
         var users = await _unitOfWork._userGenericService.GetAll();
         return Ok(users);

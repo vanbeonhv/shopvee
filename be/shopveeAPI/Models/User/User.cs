@@ -14,6 +14,8 @@ public class User : AuditEntity
     public string? Address {get; set;}
     [Column("refresh_token")]
     public string? RefreshToken {get; set;}
+    [Column("refresh_token_expired")]
+    public string? RefreshTokenExpired {get; set;}
     [Column("access_token")]
     public string? AccessToken {get; set;}
     [Column("date_of_birth")]
