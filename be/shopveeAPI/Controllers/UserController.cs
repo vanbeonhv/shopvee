@@ -13,9 +13,9 @@ namespace shopveeAPI.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
+    private readonly IConfiguration _configuration;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UserRequest> _validator;
-    private readonly IConfiguration _configuration;
 
     public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator, IConfiguration configuration)
     {

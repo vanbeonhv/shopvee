@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using shopveeAPI.DbContext;
-using shopveeAPI.Repository;
 using shopveeAPI.Services.Auth;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;

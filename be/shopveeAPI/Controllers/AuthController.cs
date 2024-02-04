@@ -1,14 +1,8 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using shopveeAPI.Services.Auth.Dto.Response;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.UnitOfWork;
-using shopveeAPI.Utils;
 
 namespace shopveeAPI.Controllers
 {

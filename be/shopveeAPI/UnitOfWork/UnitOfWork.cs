@@ -1,14 +1,12 @@
-using shopveeAPI.Services.User;
 using shopveeAPI.DbContext;
 using shopveeAPI.Services.Auth;
+using shopveeAPI.Services.User;
 
 namespace shopveeAPI.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ShopveeDbContext _dbContext;
-    public IUserGenericService _userGenericService { get; set; }
-    public IAuthService _authService { get; set; }
 
     public UnitOfWork(ShopveeDbContext dbContext, IUserGenericService userGenericService, IAuthService authService)
     {
@@ -16,6 +14,9 @@ public class UnitOfWork : IUnitOfWork
         _userGenericService = userGenericService;
         _authService = authService;
     }
+
+    public IUserGenericService _userGenericService { get; set; }
+    public IAuthService _authService { get; set; }
 
 
     public int SaveChange()

@@ -11,12 +11,10 @@ using shopveeAPI.Utils;
 
 namespace shopveeAPI.Services.Auth;
 
-using Models;
-
 public class AuthService : IAuthService
 {
-    private readonly ShopveeDbContext _shopveeDbContext;
     private readonly IConfiguration _configuration;
+    private readonly ShopveeDbContext _shopveeDbContext;
 
     public AuthService(ShopveeDbContext shopveeDbContext, IConfiguration configuration)
     {
