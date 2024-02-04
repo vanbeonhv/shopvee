@@ -43,6 +43,7 @@ namespace shopveeAPI.Repository
             {
                 return 0;
             }
+
             _shopveeDbContext.Set<T>().Remove(entity);
             await _shopveeDbContext.SaveChangesAsync();
             return 1;

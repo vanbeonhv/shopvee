@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using a;
+
+
 
 namespace Models;
 public class User : AuditEntity
@@ -12,10 +13,14 @@ public class User : AuditEntity
     public int Age {get; set;}
     [Column("address")]
     public string? Address {get; set;}
-    [Column("refresh_token")]
-    public string? RefreshToken {get; set;}
+    [Column("refresh_token")] 
+    public string RefreshToken { get; set; } = null!;
+    [Column("refresh_token_expired")]
+    public DateTime RefreshTokenExpired {get; set;}
     [Column("access_token")]
     public string? AccessToken {get; set;}
+    [Column("full_name")]
+    public string? FullName {get; set;}
     [Column("date_of_birth")]
     public DateTime? DateOfBirth {get; set;}
     [Column("phone")]

@@ -10,6 +10,7 @@
         <PackageReference Include="DotNetEnv" Version="3.0.0" />
         <PackageReference Include="FluentValidation" Version="11.9.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.23" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.23">
           <PrivateAssets>all</PrivateAssets>
@@ -28,14 +29,13 @@
       <Folder Include="Configuration\" />
       <Folder Include="Filters\" />
       <Folder Include="Repository/" />
+      <Folder Include="Services\User\Dto\Response\" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="Models\Models.csproj" />
+      <_ContentIncludedByDefault Remove="CommonLibs\obj\CommonLibs.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="CommonLibs\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="CommonLibs\obj\project.packagespec.json" />
     </ItemGroup>
-
-    <!-- <ItemGroup>
-      <ProjectReference Include="Models\Models.csproj" />
-    </ItemGroup> -->
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace a;
+namespace Models;
 
 public class AuditEntity
 {
