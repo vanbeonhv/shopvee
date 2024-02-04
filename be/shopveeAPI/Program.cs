@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using shopveeAPI.DbContext;
+using shopveeAPI.Middleware;
 using shopveeAPI.Services.Auth;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
@@ -48,6 +49,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<AuthService>();
+
 builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();
 
 
@@ -61,6 +64,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<AccessTokenMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -11,6 +11,7 @@ namespace shopveeAPI.Controllers;
 
 [Route("api/user")]
 [ApiController]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -25,7 +26,6 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("get-all")]
-    [Authorize()]
     public async Task<ActionResult> GetAllUser()
     {
         var users = await _unitOfWork._userGenericService.GetAll();

@@ -38,15 +38,7 @@ public class AuthService : IAuthService
             }
 
             //Buoc 2: Tao token
-            var authClaims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.FullName ?? string.Empty),
-            };
-
-            var newAccessToken = CreateToken(authClaims);
-            var token = new JwtSecurityTokenHandler().WriteToken(newAccessToken);
+            var token = CreateAccessToken(user);
             var refreshToken = Helper.GenerateRefreshToken();
 
             //Buoc 3: update refreshToken vao db
@@ -76,12 +68,12 @@ public class AuthService : IAuthService
         var authSignInKey =
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? string.Empty));
-        _ = int.TryParse(_configuration["JWT:TokenValidityInMinutes"], out int tokenValidityInMunute);
+        _ = int.TryParse(_configuration["JWT:TokenValidityInMinutes"], out int tokenValidityInMinute);
 
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:ValidIssuer"],
             audience: _configuration["JWT:ValidAudience"],
-            expires: DateTime.Now.AddMinutes(tokenValidityInMunute),
+            expires: DateTime.Now.AddMinutes(tokenValidityInMinute),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSignInKey, SecurityAlgorithms.HmacSha256)
         );
@@ -102,5 +94,20 @@ public class AuthService : IAuthService
         _shopveeDbContext.User.Update(user);
         await _shopveeDbContext.SaveChangesAsync();
         return new OkObjectResult("updated");
+    }
+
+    public string CreateAccessToken(Models.User user)
+    {
+        var authClaims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.FullName ?? string.Empty),
+        };
+
+        var newAccessToken = CreateToken(authClaims);
+        var token = new JwtSecurityTokenHandler().WriteToken(newAccessToken);
+
+        return token;
     }
 }
