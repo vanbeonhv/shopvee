@@ -2,9 +2,10 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-using shopveeAPI.Services.User;
+using shopveeAPI.Filter;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.UnitOfWork;
+using shopveeAPI.Utils;
 
 namespace shopveeAPI.Controllers;
 
@@ -14,14 +15,17 @@ public class UserController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UserRequest> _validator;
+    private readonly IConfiguration _configuration;
 
-    public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator)
+    public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator, IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
         _validator = validator;
+        _configuration = configuration;
     }
 
     [HttpGet("get-all")]
+    [Authorize()]
     public async Task<ActionResult> GetAllUser()
     {
         var users = await _unitOfWork._userGenericService.GetAll();
@@ -37,11 +41,16 @@ public class UserController : ControllerBase
             return BadRequest(validationResult.Errors.Select(error => error.ErrorMessage));
         }
 
+        var expired = _configuration["JWT:RefreshTokenValidityInDays"] ?? String.Empty;
+        var refreshToken = Helper.GenerateRefreshToken();
+
         //Add mapping method later
         var entiry = new User()
         {
             Email = request.Email,
-            Password = request.Password
+            Password = request.Password,
+            RefreshToken = refreshToken,
+            RefreshTokenExpired = DateTime.Now.AddDays(int.Parse(expired))
         };
         var res = await _unitOfWork._userGenericService.Add(entiry);
 

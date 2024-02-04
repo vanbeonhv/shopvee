@@ -8,7 +8,6 @@ using Models;
 
 public interface IUserGenericService : IGenericRepository<User>
 {
-     Task<IActionResult> Login(UserRequest userRequest);
-     Task<IActionResult> UpdateRefreshToken(UserUpdateRefreshTokenRequest userUpdateRefreshTokenRequest);
+
      
 }

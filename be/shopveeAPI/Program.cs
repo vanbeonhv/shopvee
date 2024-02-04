@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using shopveeAPI.DbContext;
 using shopveeAPI.Repository;
+using shopveeAPI.Services.Auth;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.Services.User.Validator;
@@ -18,7 +19,8 @@ Env.Load();
 
 // Add services to the container
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
-    opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING").Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
+    opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING")
+        .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
 
 //Add service JwtBear
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -31,7 +33,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
         ValidAudience = builder.Configuration["Jwt:ValidAudience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? String.Empty))
     };
 });
 
@@ -44,8 +48,8 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();
-
 
 
 var app = builder.Build();

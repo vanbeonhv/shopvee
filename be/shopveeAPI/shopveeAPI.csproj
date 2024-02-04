@@ -33,11 +33,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="Models\Models.csproj" />
+      <_ContentIncludedByDefault Remove="CommonLibs\obj\CommonLibs.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="CommonLibs\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="CommonLibs\obj\project.packagespec.json" />
     </ItemGroup>
-
-    <!-- <ItemGroup>
-      <ProjectReference Include="Models\Models.csproj" />
-    </ItemGroup> -->
 
 </Project>

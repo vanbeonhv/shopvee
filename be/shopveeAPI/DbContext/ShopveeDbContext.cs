@@ -1,10 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace shopveeAPI.DbContext;
 
-using Microsoft.EntityFrameworkCore;
-
-public class ShopveeDbContext : DbContext
+public class ShopveeDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
     public ShopveeDbContext(DbContextOptions options) : base(options)
     {
