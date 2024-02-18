@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace shopveeAPI.Models;
 
-
-namespace Models;
 [Table("user")]
 public class User : AuditEntity
 {

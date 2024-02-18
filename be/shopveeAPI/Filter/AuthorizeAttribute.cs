@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Models;
+using shopveeAPI.Models;
 using shopveeAPI.DbContext;
 using shopveeAPI.Responses;
 using shopveeAPI.Services.Auth;

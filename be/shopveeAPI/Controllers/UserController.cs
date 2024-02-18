@@ -1,8 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Models;
-using shopveeAPI.Filter;
+using shopveeAPI.Models;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.UnitOfWork;
 using shopveeAPI.Utils;
@@ -45,14 +44,14 @@ public class UserController : ControllerBase
         var refreshToken = Helper.GenerateRefreshToken();
 
         //Add mapping method later
-        var entiry = new User()
+        var entity = new User()
         {
             Email = request.Email,
             Password = request.Password,
             RefreshToken = refreshToken,
             RefreshTokenExpired = DateTime.Now.AddDays(int.Parse(expired))
         };
-        var res = await _unitOfWork._userGenericService.Add(entiry);
+        var res = await _unitOfWork._userGenericService.Add(entity);
 
         return res == 0 ? BadRequest("error") : Ok(res);
     }
