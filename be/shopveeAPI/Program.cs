@@ -19,7 +19,7 @@ Env.Load();
 
 // Add services to the container
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
-    opts.UseSqlServer(configuration.GetConnectionString("CONNECTION_STRING")
+    opts.UseNpgsql(configuration.GetConnectionString("CONNECTION_STRING")
         .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
 
 //Add service JwtBear

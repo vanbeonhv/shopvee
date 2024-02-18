@@ -268,3 +268,5 @@ BeLibrary/obj
 **/Debug/
 /BeLibrary/obj/Debug
 .env
+*.vpp.bak_*
+*.vpp.lck

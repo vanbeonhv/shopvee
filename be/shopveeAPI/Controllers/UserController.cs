@@ -11,7 +11,7 @@ namespace shopveeAPI.Controllers;
 
 [Route("api/user")]
 [ApiController]
-[Authorize]
+// [Authorize]
 public class UserController : ControllerBase
 {
     private readonly IConfiguration _configuration;
