@@ -5,6 +5,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using shopveeAPI.Dapper;
 using shopveeAPI.DbContext;
 using shopveeAPI.Middleware;
 using shopveeAPI.Services.Auth;
@@ -20,9 +21,11 @@ Env.Load();
 // Add services to the container
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
     opts.UseNpgsql(configuration.GetConnectionString("CONNECTION_STRING")
-        .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))));
+        .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))))
+    ;
+builder.Services.AddTransient<IApplicationDbConnection, ApplicationDbConnection>();
 
-//Add service JwtBear
+//Add service JwtBea
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -48,6 +51,7 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
+builder.Services.AddScoped<IUserServiceDapper, UserServiceDapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<AuthService>();
 

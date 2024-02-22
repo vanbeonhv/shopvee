@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using shopveeAPI.DbContext;
 
@@ -12,18 +13,18 @@ namespace shopveeAPI.Repository
             _shopveeDbContext = shopveeDbContext;
         }
 
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await _shopveeDbContext.Set<T>().AsQueryable().ToListAsync();
+        }
+        
         public async Task<int> Add(T entity)
         {
             _shopveeDbContext.Add(entity);
             return await _shopveeDbContext.SaveChangesAsync();
         }
 
-        public async Task<List<T>> GetAll()
-        {
-            return await _shopveeDbContext.Set<T>().AsQueryable().ToListAsync();
-        }
-
-        public async Task<T> GetById(Guid id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await _shopveeDbContext.Set<T>().FindAsync(id)
                    ??

@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using shopveeAPI.Models;
+using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.UnitOfWork;
 using shopveeAPI.Utils;
@@ -16,21 +17,30 @@ public class UserController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UserRequest> _validator;
+    private readonly IUserServiceDapper _userServiceDapper;
 
-    public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator, IConfiguration configuration)
+    public UserController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator, IConfiguration configuration, IUserServiceDapper userServiceDapper)
     {
         _unitOfWork = unitOfWork;
         _validator = validator;
         _configuration = configuration;
+        _userServiceDapper = userServiceDapper;
     }
 
     [HttpGet("get-all")]
     public async Task<ActionResult> GetAllUser()
     {
-        var users = await _unitOfWork._userGenericService.GetAll();
+        var users = await _unitOfWork._userGenericService.GetAllAsync();
         return Ok(users);
     }
-
+    
+    [HttpGet("get-all-dapper")]
+    public async Task<ActionResult> GetAllUserDapper()
+    {
+        var users = await _userServiceDapper.GetAllAsync();
+        return Ok(users);
+    }
+    
     [HttpPost()]
     public async Task<ActionResult> AddUser([FromBody] UserRequest request)
     {
