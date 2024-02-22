@@ -9,10 +9,8 @@ public class User : AuditEntity
     public string Email { get; set; } = null!;
     [Column("password")]
     public string Password {get; set;} = null!;
-    [Column("age")]
-    public int? Age {get; set;}
     [Column("address")]
-    public string? Address {get; set;}
+    public ICollection<AddressEntity> Addresses {get; set;}
     [Column("refresh_token")] 
     public string RefreshToken { get; set; } = null!;
     [Column("refresh_token_expired")]
