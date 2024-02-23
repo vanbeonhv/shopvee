@@ -9,11 +9,20 @@ public class UserServiceDapper : BaseApplicationService, IUserServiceDapper
     {
     }
     
-    public async Task<List<Models.User>> GetAllAsync()
+    public async Task<List<Models.User>> GetAllAsync(Guid? id)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("Id", Guid.NewGuid());
-        var result = await DbConnection.QueryAsync<Models.User>("SELECT * FROM User", parameters);
+        string query;
+        if (id == null)
+        {
+            query = "select * from user";
+        }
+        else
+        {
+            parameters.Add("Id", id);
+            query = "select * from user where id = @Id";
+        }
+        var result = await DbConnection.QueryAsync<Models.User>(query, parameters);
         return result;
     }
 }

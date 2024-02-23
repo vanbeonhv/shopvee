@@ -34,10 +34,10 @@ public class UserController : ControllerBase
         return Ok(users);
     }
     
-    [HttpGet("get-all-dapper")]
-    public async Task<ActionResult> GetAllUserDapper()
+    [HttpGet("get-dapper")]
+    public async Task<ActionResult> GetAllUserDapper(Guid? id = null)
     {
-        var users = await _userServiceDapper.GetAllAsync();
+        var users = await _userServiceDapper.GetAllAsync(id);
         return Ok(users);
     }
     

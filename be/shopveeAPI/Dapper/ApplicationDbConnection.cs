@@ -24,29 +24,29 @@ public class ApplicationDbConnection : IApplicationDbConnection
 
 
     public Task<int> ExecuteAsync(string sql, object param = null,
-        CommandType commandType = CommandType.StoredProcedure,
+        CommandType commandType = CommandType.Text,
         IDbTransaction transaction = null, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
     public async Task<List<T>> QueryAsync<T>(string sql, object param = null,
-        CommandType commandType = CommandType.StoredProcedure,
+        CommandType commandType = CommandType.Text,
         IDbTransaction transaction = null, CancellationToken cancellationToken = default)
     {
         return (await _connection.QueryAsync<T>(sql, param, transaction, commandType: commandType)).AsList();
     }
 
     public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object param = null,
-        CommandType commandType = CommandType.StoredProcedure,
+        CommandType commandType = CommandType.Text,
         IDbTransaction transaction = null, CancellationToken cancellationToken = default)
     {
         return await _connection.QueryFirstOrDefaultAsync<T>(sql, param, transaction, commandType: commandType);
     }
 
-    public async Task<T> QuerySingleAsync<T>(string sql, object param = null,
-        CommandType commandType = CommandType.StoredProcedure,
-        IDbTransaction transaction = null, CancellationToken cancellationToken = default)
+    public async Task<T> QuerySingleAsync<T>(string sql, object param,
+        CommandType commandType,
+        IDbTransaction transaction, CancellationToken cancellationToken = default)
     {
         return await _connection.QuerySingleAsync<T>(sql, param, transaction, commandType: commandType);
     }
