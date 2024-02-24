@@ -58,6 +58,7 @@ public class UserController : ControllerBase
         {
             Email = request.Email,
             Password = request.Password,
+            FullName = request.FullName,
             RefreshToken = refreshToken,
             RefreshTokenExpired = DateTime.Now.AddDays(int.Parse(expired))
         };

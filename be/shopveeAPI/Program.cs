@@ -5,10 +5,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using shopveeAPI.AutoMapper;
 using shopveeAPI.Dapper;
 using shopveeAPI.DbContext;
 using shopveeAPI.Middleware;
 using shopveeAPI.Services.Auth;
+using shopveeAPI.Services.Product;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.Services.User.Validator;
@@ -20,8 +22,8 @@ Env.Load();
 
 // Add services to the container
 builder.Services.AddDbContext<ShopveeDbContext>(opts =>
-    opts.UseNpgsql(configuration.GetConnectionString("CONNECTION_STRING")
-        .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))))
+        opts.UseNpgsql(configuration.GetConnectionString("CONNECTION_STRING")
+            .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD"))))
     ;
 builder.Services.AddTransient<IApplicationDbConnection, ApplicationDbConnection>();
 
@@ -45,6 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -53,6 +56,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
 builder.Services.AddScoped<IUserServiceDapper, UserServiceDapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();
@@ -66,6 +70,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
 app.UseMiddleware<AccessTokenMiddleware>();
@@ -74,5 +79,4 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

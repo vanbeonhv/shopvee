@@ -1,10 +1,11 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using shopveeAPI.Common;
 using shopveeAPI.DbContext;
 
 namespace shopveeAPI.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : Service, IGenericRepository<T> where T : class
     {
         private readonly ShopveeDbContext _shopveeDbContext;
 
