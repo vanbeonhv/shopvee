@@ -79,13 +79,13 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
         return true;
     }
 
-    private async Task<ApiResponse> CheckTokenExpiry(AuthorizationFilterContext context)
+    private async Task<ApiResponse<dynamic>> CheckTokenExpiry(AuthorizationFilterContext context)
     {
         //Buoc 1: Lay token tu request
         var accessToken = context.HttpContext.Items["access_token"]?.ToString();
         if (accessToken == null)
         {
-            return await Task.FromResult(new ApiResponse("invalid access token", (int)HttpStatusCode.Unauthorized));
+            return await Task.FromResult(new ApiResponse<dynamic>("invalid access token", (int)HttpStatusCode.Unauthorized));
         }
 
         var jwtSecurityToken = new JwtSecurityToken(accessToken);
@@ -93,14 +93,14 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
 
         if (validTo > DateTime.Now)
         {
-            return await Task.FromResult(new ApiResponse("accepted token", (int)HttpStatusCode.Accepted));
+            return await Task.FromResult(new ApiResponse<dynamic>("accepted token", (int)HttpStatusCode.Accepted));
         }
 
         //Buoc 2: Giai ma token dua vao secretKey da config truoc do
         var principal = GetPrincipalFromExpiredToken(accessToken);
         if (principal == null)
         {
-            return await Task.FromResult(new ApiResponse("accepted token", (int)HttpStatusCode.Accepted));
+            return await Task.FromResult(new ApiResponse<dynamic>("accepted token", (int)HttpStatusCode.Accepted));
         }
 
         //Buoc 3: Lay userName tu token ra 
@@ -111,14 +111,14 @@ public class AuthorizeActionFilter : IAsyncAuthorizationFilter
         var user = await dbContext.User.FirstOrDefaultAsync(u => u.Email == userEmail);
         if (user == null || user.RefreshTokenExpired <= DateTime.Now)
         {
-            return await Task.FromResult(new ApiResponse("expired refresh token", (int)HttpStatusCode.Unauthorized));
+            return await Task.FromResult(new ApiResponse<dynamic>("expired refresh token", (int)HttpStatusCode.Unauthorized));
         }
 
         //Buoc 5: Khoi tai AccessToken khac va thay the token cu
         var authService = context.HttpContext.RequestServices.GetRequiredService<AuthService>();
         var newAccessToken = authService.CreateAccessToken(user);
         context.HttpContext.Request.Headers["Authorization"] = "Bearer" + newAccessToken;
-        return await Task.FromResult(new ApiResponse("accepted token", (int)HttpStatusCode.Accepted));
+        return await Task.FromResult(new ApiResponse<dynamic>("accepted token", (int)HttpStatusCode.Accepted));
     }
 
 
