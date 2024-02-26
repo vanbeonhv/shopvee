@@ -30,7 +30,7 @@ namespace shopveeAPI.Controllers
                 return BadRequest(validationResult.Errors.Select(error => error.ErrorMessage));
             }
 
-            var authResponse = await _unitOfWork._authService.Login(authRequest);
+            var authResponse = await _unitOfWork.AuthService.Login(authRequest);
             return authResponse.ResponseCode > 0 ? Ok(authResponse) : BadRequest(authResponse);
         }
     }

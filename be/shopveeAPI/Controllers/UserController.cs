@@ -30,7 +30,7 @@ public class UserController : ControllerBase
     [HttpGet("get-all")]
     public async Task<ActionResult> GetAllUser()
     {
-        var users = await _unitOfWork._userGenericService.GetAllAsync();
+        var users = await _unitOfWork.UserGenericService.GetAllAsync();
         return Ok(users);
     }
     
@@ -62,7 +62,8 @@ public class UserController : ControllerBase
             RefreshToken = refreshToken,
             RefreshTokenExpired = DateTime.Now.AddDays(int.Parse(expired))
         };
-        var res = await _unitOfWork._userGenericService.Add(entity);
+        // var res = await _unitOfWork.UserGenericService.Add(entity);
+        var res = 1;
 
         return res == 0 ? BadRequest("error") : Ok(res);
     }
@@ -70,7 +71,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(Guid id)
     {
-        var result = await _unitOfWork._userGenericService.Delete(id);
+        var result = await _unitOfWork.UserGenericService.Delete(id);
         return Ok(result);
     }
 }

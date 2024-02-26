@@ -5,7 +5,7 @@ namespace shopveeAPI.Repository
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(Guid id);
         Task<int> Add(T entity);
-        Task Update(T entity);
+        Task<int> Update(T entity);
         Task<int> Delete(Guid id);
     }
 }
