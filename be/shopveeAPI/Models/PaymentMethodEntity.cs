@@ -27,7 +27,7 @@ public class PaymentMethodEntity: AuditEntity
     [Required]
     public bool IsDefault { get; set; }
 
-    [ForeignKey("PaymentTypeId")]
+    [Column("payment_type")]
     public PaymentType PaymentType { get; set; }
 
     [ForeignKey("UserId")]

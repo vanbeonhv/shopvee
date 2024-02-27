@@ -10,6 +10,7 @@ using shopveeAPI.Dapper;
 using shopveeAPI.DbContext;
 using shopveeAPI.Middleware;
 using shopveeAPI.Services.Auth;
+using shopveeAPI.Services.PaymentMethod.Dto;
 using shopveeAPI.Services.Product;
 using shopveeAPI.Services.User;
 using shopveeAPI.Services.User.Dto.Request;
@@ -57,6 +58,7 @@ builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
 builder.Services.AddScoped<IUserServiceDapper, UserServiceDapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddScoped<IPaymentMethodService,PaymentMethodService>();
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();

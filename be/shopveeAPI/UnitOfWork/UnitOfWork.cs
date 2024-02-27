@@ -1,5 +1,6 @@
 using shopveeAPI.DbContext;
 using shopveeAPI.Services.Auth;
+using shopveeAPI.Services.PaymentMethod.Dto;
 using shopveeAPI.Services.Product;
 using shopveeAPI.Services.User;
 
@@ -9,17 +10,19 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ShopveeDbContext _dbContext;
 
-    public UnitOfWork(ShopveeDbContext dbContext, IUserGenericService userGenericService, IAuthService authService, IProductService productService)
+    public UnitOfWork(ShopveeDbContext dbContext, IUserGenericService userGenericService, IAuthService authService, IProductService productService, IPaymentMethodService paymentMethodService)
     {
         _dbContext = dbContext;
         _userGenericService = userGenericService;
         _authService = authService;
         _productService = productService;
+        PaymentMethodService = paymentMethodService;
     }
 
     public IUserGenericService _userGenericService { get; set; }
     public IAuthService _authService { get; set; }
     public IProductService _productService { get; set; }
+    public IPaymentMethodService PaymentMethodService { get; set; }
 
     public int SaveChange()
     {

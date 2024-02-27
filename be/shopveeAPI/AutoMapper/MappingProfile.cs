@@ -1,5 +1,7 @@
 using AutoMapper;
 using shopveeAPI.Models;
+using shopveeAPI.Services.PaymentMethod.Dto.Request;
+using shopveeAPI.Services.PaymentMethod.Dto.Response;
 using shopveeAPI.Services.Product.Dto.Request;
 using shopveeAPI.Services.Product.Dto.Response;
 
@@ -11,5 +13,7 @@ public class MappingProfile : Profile
     {
         CreateMap<ProductRequest, ProductEntity>();
         CreateMap<ProductEntity, ProductResponse>();
+        CreateMap<PaymentMethodCreateRequest, PaymentMethodEntity>();
+        CreateMap<PaymentMethodEntity, PaymentMethodReponse>();
     }
 }

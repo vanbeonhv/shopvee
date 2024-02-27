@@ -11,7 +11,7 @@ public class ProductService : GenericRepository<ProductEntity>, IProductService
 {
     private readonly ShopveeDbContext _shopveeDbContext;
     private readonly IMapper _mapper;
-
+ 
     public ProductService(ShopveeDbContext shopveeDbContext, IMapper mapper) : base(shopveeDbContext)
     {
         _shopveeDbContext = shopveeDbContext;

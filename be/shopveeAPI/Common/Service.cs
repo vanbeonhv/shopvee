@@ -1,10 +1,11 @@
 using System.Net;
+using shopveeAPI.Models;
 
 namespace shopveeAPI.Common;
 
 public abstract class Service
 {
-    protected ServiceResponse Ok(object data, string message = "Success")
+    protected ServiceResponse Ok(object data = default!, string message = "Success")
     {
         return ServiceResponse.Succeed((int)HttpStatusCode.OK, data, message);
     }
