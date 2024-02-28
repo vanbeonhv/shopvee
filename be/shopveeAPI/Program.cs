@@ -9,6 +9,7 @@ using shopveeAPI.AutoMapper;
 using shopveeAPI.Dapper;
 using shopveeAPI.DbContext;
 using shopveeAPI.Middleware;
+using shopveeAPI.Services.Address;
 using shopveeAPI.Services.Auth;
 using shopveeAPI.Services.Product;
 using shopveeAPI.Services.User;
@@ -28,21 +29,21 @@ builder.Services.AddDbContext<ShopveeDbContext>(opts =>
 builder.Services.AddTransient<IApplicationDbConnection, ApplicationDbConnection>();
 
 //Add service JwtBea
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
-        ValidAudience = builder.Configuration["Jwt:ValidAudience"],
-        IssuerSigningKey =
-            new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? String.Empty))
-    };
-});
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+//{
+//    options.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        ValidateIssuerSigningKey = true,
+//        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
+//        ValidAudience = builder.Configuration["Jwt:ValidAudience"],
+//        IssuerSigningKey =
+//            new SymmetricSecurityKey(
+//                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? String.Empty))
+//    };
+//});
 
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -58,6 +59,7 @@ builder.Services.AddScoped<IUserServiceDapper, UserServiceDapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAddressServices,AddressServices>();
 
 builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();
 
@@ -73,7 +75,7 @@ if (app.Environment.IsDevelopment())
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
-app.UseMiddleware<AccessTokenMiddleware>();
+//app.UseMiddleware<AccessTokenMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
