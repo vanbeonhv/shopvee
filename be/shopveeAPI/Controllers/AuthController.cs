@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using shopveeAPI.Services.Auth.Dto.Request;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.UnitOfWork;
 
@@ -11,9 +12,9 @@ namespace shopveeAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IValidator<UserRequest> _validator;
+        private readonly IValidator<AuthRequest> _validator;
 
-        public AuthController(IUnitOfWork unitOfWork, IValidator<UserRequest> validator)
+        public AuthController(IUnitOfWork unitOfWork, IValidator<AuthRequest> validator)
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
@@ -21,15 +22,15 @@ namespace shopveeAPI.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(UserRequest userRequest)
+        public async Task<ActionResult> Login(AuthRequest authRequest)
         {
-            ValidationResult validationResult = await _validator.ValidateAsync(userRequest);
+            ValidationResult validationResult = await _validator.ValidateAsync(authRequest);
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors.Select(error => error.ErrorMessage));
             }
 
-            var authResponse = await _unitOfWork._authService.Login(userRequest);
+            var authResponse = await _unitOfWork._authService.Login(authRequest);
             return authResponse.ResponseCode > 0 ? Ok(authResponse) : BadRequest(authResponse);
         }
     }

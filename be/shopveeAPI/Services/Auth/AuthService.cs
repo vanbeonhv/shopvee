@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using shopveeAPI.DbContext;
+using shopveeAPI.Services.Auth.Dto.Request;
 using shopveeAPI.Services.Auth.Dto.Response;
 using shopveeAPI.Services.User.Dto.Request;
 using shopveeAPI.Utils;
@@ -22,14 +23,14 @@ public class AuthService : IAuthService
         _configuration = configuration;
     }
 
-    public async Task<AuthResponse> Login(UserRequest userRequest)
+    public async Task<AuthResponse> Login(AuthRequest authRequest)
     {
         try
         {
             var authResponse = new AuthResponse();
             //Buoc 1: Login
             var user = await _shopveeDbContext.User.FirstOrDefaultAsync(u =>
-                u.Email == userRequest.Email && u.Password == userRequest.Password);
+                u.Email == authRequest.Email && u.Password == authRequest.Password);
             if (user == null)
             {
                 authResponse.Message = "Invalid email or password";
