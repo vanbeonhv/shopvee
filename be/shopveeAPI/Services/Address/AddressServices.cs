@@ -1,17 +1,19 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
 using shopveeAPI.Common;
 using shopveeAPI.DbContext;
 using shopveeAPI.Models;
 using shopveeAPI.Repository;
 using shopveeAPI.Services.Address.Dto.Request;
 using shopveeAPI.Services.Address.Dto.Response;
-using shopveeAPI.Services.Product;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace shopveeAPI.Services.Address
 {
-    public class AddressServices: GenericRepository<AddressEntity>, IAddressServices
+    public class AddressServices : GenericRepository<AddressEntity>, IAddressServices
     {
         private readonly ShopveeDbContext _shopveeDbContext;
         private readonly IMapper _mapper;
@@ -24,46 +26,30 @@ namespace shopveeAPI.Services.Address
             _mapper = mapper;
         }
 
-
         public async Task<ServiceResponse> Add(AddressRequest request)
         {
             try
             {
-                var checkFirstAddress = _shopveeDbContext.Address.Count();
-                if (checkFirstAddress == 0 )
-                {                
-                    AddressEntity addressEntity = _mapper.Map<AddressEntity>(request);
-                    addressEntity.IsDefault = true;
-                    await _shopveeDbContext.Address.AddAsync(addressEntity);
-                    await _shopveeDbContext.SaveChangesAsync();
+                var listAddressCount = await _shopveeDbContext.Address.CountAsync();
 
-                    var getResp = _mapper.Map<AddressResponse>(addressEntity);
-                    return Ok(getResp, "success");
-                }
-                else if (checkFirstAddress > MaxAddress)
+                if (listAddressCount >= MaxAddress)
                 {
-                    return BadRequest("No more allowed");
+                    return BadRequest("No more addresses allowed.");
                 }
-                else
+
+                AddressEntity addressEntity = _mapper.Map<AddressEntity>(request);
+                addressEntity.IsDefault = listAddressCount == 0 || request.IsDefault;
+
+                if (addressEntity.IsDefault)
                 {
-                    if (request.IsDefault)
-                    {
-                        await _shopveeDbContext.Address.Where(x => x.IsDefault).ForEachAsync(x=>x.IsDefault = false);
-                        AddressEntity addressEntity = _mapper.Map<AddressEntity>(request);
-                        await _shopveeDbContext.Address.AddAsync(addressEntity);
-                        await _shopveeDbContext.SaveChangesAsync();
-                        var getResp = _mapper.Map<AddressResponse>(addressEntity);
-                        return Ok(getResp, "success");
-                    }
-                    else
-                    {
-                        AddressEntity addressEntity = _mapper.Map<AddressEntity>(request);
-                        await _shopveeDbContext.Address.AddAsync(addressEntity);
-                        await _shopveeDbContext.SaveChangesAsync();
-                        var getResp = _mapper.Map<AddressResponse>(addressEntity);
-                        return Ok(getResp, "success");
-                    }
+                    await _shopveeDbContext.Address.Where(x => x.IsDefault).ForEachAsync(x => x.IsDefault = false);
                 }
+
+                await _shopveeDbContext.Address.AddAsync(addressEntity);
+                await _shopveeDbContext.SaveChangesAsync();
+
+                var response = _mapper.Map<AddressResponse>(addressEntity);
+                return Ok(response);
             }
             catch (Exception e)
             {
@@ -75,16 +61,17 @@ namespace shopveeAPI.Services.Address
         {
             try
             {
-                if (id != request.UserId)
+                if (id != request.Id)
                 {
                     return NotFound();
                 }
 
-                var newEnt = _mapper.Map<AddressEntity>(request);
-                _shopveeDbContext.Address.Update(newEnt);
+                var newEntity = _mapper.Map<AddressEntity>(request);
+                _shopveeDbContext.Address.Update(newEntity);
                 await _shopveeDbContext.SaveChangesAsync();
-                var repo = _mapper.Map<AddressResponse>(newEnt);
-                return Ok(repo,"success");
+
+                var response = _mapper.Map<AddressResponse>(newEntity);
+                return Ok(response);
             }
             catch (Exception e)
             {
@@ -96,9 +83,9 @@ namespace shopveeAPI.Services.Address
         {
             try
             {
-                var getT = await _shopveeDbContext.Address.ToListAsync();
-                var response = _mapper.Map<List<AddressResponse>>(getT);
-                return Ok(response!);
+                var addresses = await _shopveeDbContext.Address.ToListAsync();
+                var response = _mapper.Map<List<AddressResponse>>(addresses);
+                return Ok(response);
             }
             catch (Exception e)
             {
@@ -108,20 +95,29 @@ namespace shopveeAPI.Services.Address
 
         public async Task<ServiceResponse> GetAddressAsync(Guid id)
         {
-            var address = await _shopveeDbContext.Address!.FindAsync(id);
-            var returResp = _mapper.Map<List<AddressResponse>>(address);
-            return Ok(returResp!,"success");
+            var address = await _shopveeDbContext.Address.FindAsync(id);
+
+            if (address == null)
+            {
+                return NotFound();
+            }
+
+            var response = _mapper.Map<AddressResponse>(address);
+            return Ok(response);
         }
 
         public async Task<ServiceResponse> DeleteAddressAsync(Guid id)
         {
-            var deleteAddress = _shopveeDbContext.Address!.SingleOrDefaultAsync(x => x.Id == id).Result;
+            var deleteAddress = await _shopveeDbContext.Address.FindAsync(id);
+
             if (deleteAddress != null)
             {
-                _shopveeDbContext.Address!.Remove(deleteAddress);
+                _shopveeDbContext.Address.Remove(deleteAddress);
+                await _shopveeDbContext.SaveChangesAsync();
+                return Ok(deleteAddress);
             }
-            await _shopveeDbContext.SaveChangesAsync();
-            return Ok("success");
+
+            return NotFound();
         }
     }
 }

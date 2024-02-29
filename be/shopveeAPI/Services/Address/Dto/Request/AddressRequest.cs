@@ -12,10 +12,9 @@ namespace shopveeAPI.Services.Address.Dto.Request
 
         public bool IsDefault { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid Id { get; set; }
 
         public AddressType AddressType { get; set; } = AddressType.Default;
 
-        //public Models.User User { get; set; }
     }
 }
