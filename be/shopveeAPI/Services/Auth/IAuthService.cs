@@ -1,9 +1,9 @@
+using shopveeAPI.Services.Auth.Dto.Request;
 using shopveeAPI.Services.Auth.Dto.Response;
-using shopveeAPI.Services.User.Dto.Request;
 
 namespace shopveeAPI.Services.Auth;
 
 public interface IAuthService
 {
-    Task<AuthResponse> Login(UserRequest userRequest);
+    Task<AuthResponse> Login(AuthRequest authRequest);
 }

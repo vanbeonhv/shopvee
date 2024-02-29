@@ -10,10 +10,10 @@ using shopveeAPI.Dapper;
 using shopveeAPI.DbContext;
 using shopveeAPI.Middleware;
 using shopveeAPI.Services.Auth;
+using shopveeAPI.Services.Auth.Dto.Request;
+using shopveeAPI.Services.Auth.Validator;
 using shopveeAPI.Services.Product;
 using shopveeAPI.Services.User;
-using shopveeAPI.Services.User.Dto.Request;
-using shopveeAPI.Services.User.Validator;
 using shopveeAPI.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,7 +59,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<AuthService>();
 
-builder.Services.AddScoped<IValidator<UserRequest>, UserRequestValidator>();
+builder.Services.AddScoped<IValidator<AuthRequest>, AuthRequestValidator>();
 
 
 var app = builder.Build();

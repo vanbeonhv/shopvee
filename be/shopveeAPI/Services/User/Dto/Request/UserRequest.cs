@@ -1,9 +1,9 @@
+using shopveeAPI.Services.Auth.Dto.Request;
+
 namespace shopveeAPI.Services.User.Dto.Request;
 
-public class UserRequest
+public class UserRequest: AuthRequest
 {
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
     public string FullName { get; set; } = null!;
 }
 

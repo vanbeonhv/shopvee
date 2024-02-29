@@ -1,11 +1,11 @@
 using FluentValidation;
-using shopveeAPI.Services.User.Dto.Request;
+using shopveeAPI.Services.Auth.Dto.Request;
 
-namespace shopveeAPI.Services.User.Validator;
+namespace shopveeAPI.Services.Auth.Validator;
 
-public class UserRequestValidator : AbstractValidator<UserRequest>
+public class AuthRequestValidator : AbstractValidator<AuthRequest>
 {
-    public UserRequestValidator()
+    public AuthRequestValidator()
     {
         RuleFor(user => user.Email)
             .NotEmpty().WithMessage("Email is required.")
