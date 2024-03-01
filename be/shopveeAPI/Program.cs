@@ -29,21 +29,21 @@ builder.Services.AddDbContext<ShopveeDbContext>(opts =>
 builder.Services.AddTransient<IApplicationDbConnection, ApplicationDbConnection>();
 
 //Add service JwtBea
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
-//        ValidAudience = builder.Configuration["Jwt:ValidAudience"],
-//        IssuerSigningKey =
-//            new SymmetricSecurityKey(
-//                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? String.Empty))
-//    };
-//});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
+        ValidAudience = builder.Configuration["Jwt:ValidAudience"],
+        IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? String.Empty))
+    };
+});
 
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -75,7 +75,7 @@ if (app.Environment.IsDevelopment())
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
-//app.UseMiddleware<AccessTokenMiddleware>();
+app.UseMiddleware<AccessTokenMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -42,12 +42,14 @@ namespace shopveeAPI.Services.Address
 
                 if (addressEntity.IsDefault)
                 {
-                    await _shopveeDbContext.Address.Where(x => x.IsDefault).ForEachAsync(x => x.IsDefault = false);
+                    if (listAddressCount>0)
+                    {
+                        await _shopveeDbContext.Address.Where(x => x.IsDefault).ForEachAsync(x => x.IsDefault = false);
+                    }
                 }
 
                 await _shopveeDbContext.Address.AddAsync(addressEntity);
                 await _shopveeDbContext.SaveChangesAsync();
-
                 var response = _mapper.Map<AddressResponse>(addressEntity);
                 return Ok(response);
             }
@@ -61,16 +63,17 @@ namespace shopveeAPI.Services.Address
         {
             try
             {
-                if (id != request.Id)
+                var checkEntity = await _shopveeDbContext.Address.FindAsync(id);
+                if (checkEntity == null)
                 {
                     return NotFound();
                 }
 
-                var newEntity = _mapper.Map<AddressEntity>(request);
-                _shopveeDbContext.Address.Update(newEntity);
+                var entity = _mapper.Map<AddressEntity>(request);
+                _shopveeDbContext.Address.Update(entity);
                 await _shopveeDbContext.SaveChangesAsync();
 
-                var response = _mapper.Map<AddressResponse>(newEntity);
+                var response = _mapper.Map<AddressResponse>(entity);
                 return Ok(response);
             }
             catch (Exception e)
@@ -83,8 +86,8 @@ namespace shopveeAPI.Services.Address
         {
             try
             {
-                var addresses = await _shopveeDbContext.Address.ToListAsync();
-                var response = _mapper.Map<List<AddressResponse>>(addresses);
+                var entities = await _shopveeDbContext.Address.ToListAsync();
+                var response = _mapper.Map<List<AddressResponse>>(entities);
                 return Ok(response);
             }
             catch (Exception e)
