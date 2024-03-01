@@ -32,10 +32,11 @@ namespace shopveeAPI.Repository
                    throw new ArgumentNullException($"Entity with id {id} not found.");
         }
 
-        public async Task Update(T entity)
+        public async Task<int> Update(T entity)
         {
             _shopveeDbContext.Update(entity);
             await _shopveeDbContext.SaveChangesAsync();
+            return 1;
         }
 
         public async Task<int> Delete(Guid id)

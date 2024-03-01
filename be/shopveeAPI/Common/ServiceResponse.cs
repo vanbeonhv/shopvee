@@ -5,7 +5,7 @@ public class ServiceResponse
     public object? Data { get; init; } 
     public int StatusCode { get; set; }
     public bool IsSucceed { get; set; }
-    public string Message { get; init; }
+    public string Message { get; init; } = null!;
 
     private ServiceResponse()
     {

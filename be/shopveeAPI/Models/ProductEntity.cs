@@ -30,11 +30,13 @@ public class ProductEntity: AuditEntity
 
     [Required]
     [Column("sold_quantity")]
-    public int SoldQuantity { get; set; } = 0;
+    public int SoldQuantity { get; set; } 
     
     [ForeignKey("CategoryId")]
     public ProductCategoryEntity ProductCategory { get; set; } = null!;
 
     [ForeignKey("ShopId")]
-    public ShopEntity Shop { get; set; }
+    public ShopEntity Shop { get; set; } = null!;
+    public ICollection<ProductOptionValueEntity> ProductOptionValues { get; set; } = null!;
+   
 }

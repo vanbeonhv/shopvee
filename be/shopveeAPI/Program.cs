@@ -14,6 +14,8 @@ using shopveeAPI.Services.Auth;
 using shopveeAPI.Services.Auth.Dto.Request;
 using shopveeAPI.Services.Auth.Validator;
 using shopveeAPI.Services.Product;
+using shopveeAPI.Services.ProductOption;
+using shopveeAPI.Services.ProductOptionValue;
 using shopveeAPI.Services.User;
 using shopveeAPI.UnitOfWork;
 
@@ -58,8 +60,11 @@ builder.Services.AddScoped<IUserGenericService, UserGenericServices>();
 builder.Services.AddScoped<IUserServiceDapper, UserServiceDapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService,ProductService>();
-builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IAddressServices,AddressServices>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductOptionService, ProductOptionService>();
+builder.Services.AddScoped<IProductOptionValueService, ProductOptionValueService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IValidator<AuthRequest>, AuthRequestValidator>();
 
@@ -72,6 +77,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
