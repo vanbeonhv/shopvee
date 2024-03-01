@@ -9,6 +9,7 @@ using shopveeAPI.AutoMapper;
 using shopveeAPI.Dapper;
 using shopveeAPI.DbContext;
 using shopveeAPI.Middleware;
+using shopveeAPI.Services.Address;
 using shopveeAPI.Services.Auth;
 using shopveeAPI.Services.Auth.Dto.Request;
 using shopveeAPI.Services.Auth.Validator;
@@ -58,6 +59,7 @@ builder.Services.AddScoped<IUserServiceDapper, UserServiceDapper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService,ProductService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAddressServices,AddressServices>();
 
 builder.Services.AddScoped<IValidator<AuthRequest>, AuthRequestValidator>();
 
