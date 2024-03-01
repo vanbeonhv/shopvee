@@ -40,12 +40,9 @@ namespace shopveeAPI.Services.Address
                 AddressEntity addressEntity = _mapper.Map<AddressEntity>(request);
                 addressEntity.IsDefault = listAddressCount == 0 || request.IsDefault;
 
-                if (addressEntity.IsDefault)
+                if (addressEntity.IsDefault  && listAddressCount > 0)
                 {
-                    if (listAddressCount>0)
-                    {
-                        await _shopveeDbContext.Address.Where(x => x.IsDefault).ForEachAsync(x => x.IsDefault = false);
-                    }
+                    await _shopveeDbContext.Address.Where(x => x.IsDefault).ForEachAsync(x => x.IsDefault = false);
                 }
 
                 await _shopveeDbContext.Address.AddAsync(addressEntity);

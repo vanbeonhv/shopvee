@@ -11,7 +11,7 @@ public interface IUnitOfWork
     public IUserGenericService _userGenericService { get; set; }
     public IAuthService _authService { get; set; }
     public IProductService _productService { get; set; }
-    public IAddressServices _addressresponse { get; set; }
+    public IAddressServices _addressServices{ get; set; }
 
     int SaveChange();
 }

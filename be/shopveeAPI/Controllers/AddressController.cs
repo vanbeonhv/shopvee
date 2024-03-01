@@ -23,30 +23,30 @@ namespace shopveeAPI.Controllers
         [HttpGet()]
         public async Task<ServiceResponse> GetAllAddressAsync()
         {
-            var listAddress = await _unitOfWork._addressresponse.GetAllAddressAsync();
+            var listAddress = await _unitOfWork._addressServices.GetAllAddressAsync();
             return listAddress;
         }
         [HttpGet("{id}")]
         public async Task<ServiceResponse> GetAddressAsync(Guid id)
         {
-            var address = await _unitOfWork._addressresponse.GetAddressAsync(id);
+            var address = await _unitOfWork._addressServices.GetAddressAsync(id);
             return address;
         }
         [HttpPost()]
         public async Task<ServiceResponse> Add(AddressRequest request)
         {
-            return await _unitOfWork._addressresponse.Add(request);
+            return await _unitOfWork._addressServices.Add(request);
         }
         [HttpPut("{id}")]
         public async Task<ServiceResponse> Update(Guid id,AddressRequest request)
         {
-            return await _unitOfWork._addressresponse.Update(id, request);
+            return await _unitOfWork._addressServices.Update(id, request);
         }
         //DeleteAddressAsync
         [HttpDelete("{id}")]
         public async Task<ServiceResponse> DeleteAddressAsync(Guid id)
         {
-            return await _unitOfWork._addressresponse.DeleteAddressAsync(id);
+            return await _unitOfWork._addressServices.DeleteAddressAsync(id);
         }
     }
 }
